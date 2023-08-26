@@ -4,7 +4,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.interactions.commands.Command;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
@@ -32,7 +32,8 @@ public class Main implements IColors {
         }
 
         JDA bot = JDABuilder.createDefault(TOKEN)
-                .addEventListeners(new BotEventListener())
+                .addEventListeners(new BaseCommandsEventListener())
+                .addEventListeners(new MusicEventListener())
                 .setEnabledIntents(GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
                 .setActivity(Activity.playing("Link, start.."))
                 .disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE)
@@ -41,14 +42,19 @@ public class Main implements IColors {
                 .disableIntents(GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MESSAGE_TYPING)
                 .setLargeThreshold(50)
                 .build();
+        System.out.println(S_OK + "Bot configured");
         System.out.println("\t\tStage: Starting");
         bot.awaitReady();
         System.out.println(S_OK + "Bot started");
 
         // Slash commands declare
         bot.updateCommands().addCommands(
-                Commands.slash("hello", "Start command"),
-                Commands.context(Command.Type.MESSAGE, "sc.inspect")
+                Commands.slash("clear", "command to clear chat  ")
+                        .addOption(OptionType.INTEGER, "amount", "amount of messages to delete",
+                                true),
+                Commands.slash("inspect", "displays ENTIRE command list")
+                            .addOption(OptionType.STRING, "command_name", "Enter command name",
+                                false)
         ).queue();
     }
 }
