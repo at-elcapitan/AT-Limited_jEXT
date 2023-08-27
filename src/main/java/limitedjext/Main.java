@@ -1,5 +1,7 @@
 package limitedjext;
-
+;
+import dev.schlaubi.lavakord.interop.jda.LavakordJDABuilder;
+import dev.schlaubi.lavakord.jda.LJDA;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -31,20 +33,25 @@ public class Main implements IColors {
             throw new Exception(".env file corrupt or misconfigured");
         }
 
-        JDA bot = JDABuilder.createDefault(TOKEN)
+        LJDA lavajda = new LavakordJDABuilder(JDABuilder.createDefault(TOKEN)
                 .addEventListeners(new BaseCommandsEventListener())
-                .addEventListeners(new MusicEventListener())
+                //.addEventListeners(new MusicEventListener())
                 .setEnabledIntents(GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
                 .setActivity(Activity.playing("Link, start.."))
-                .disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE)
+                .disableCache(CacheFlag.MEMBER_OVERRIDES)
                 .setMemberCachePolicy(MemberCachePolicy.VOICE.or(MemberCachePolicy.OWNER))
                 .setChunkingFilter(ChunkingFilter.NONE)
                 .disableIntents(GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MESSAGE_TYPING)
-                .setLargeThreshold(50)
+                .setLargeThreshold(50))
                 .build();
+
+        JDA bot = lavajda.getJda();
+        //LavaKord lvkord = lavajda.getLavakord();
+        //JavaLavakord javalkord = JavaInterop.createJavaInterface(lvkord);
+        //javalkord.addNode("http://localhost:2333", "formathenextweatherwillbefine");
+
         System.out.println(S_OK + "Bot configured");
         System.out.println("\t\tStage: Starting");
-        bot.awaitReady();
         System.out.println(S_OK + "Bot started");
 
         // Slash commands declare
@@ -54,7 +61,11 @@ public class Main implements IColors {
                                 true),
                 Commands.slash("inspect", "displays ENTIRE command list")
                             .addOption(OptionType.STRING, "command_name", "Enter command name",
-                                false)
+                                false),
+                Commands.slash("play", "play music from YouTube")
+                        .addOption(OptionType.STRING, "url", "YouTube url to music (Not playlist)",
+                                true),
+                Commands.slash("disconnect", "Disconnect bot from voice channel")
         ).queue();
     }
 }
