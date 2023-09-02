@@ -1,4 +1,4 @@
-![Static Badge](https://img.shields.io/badge/Language-C-lightgrey) ![Static Badge](https://img.shields.io/badge/Library-Concord-purple)
+![Static Badge](https://img.shields.io/badge/Language-Java-%2523b07219) ![Static Badge](https://img.shields.io/badge/Library-JDA-purple)
 
 ## About
 
