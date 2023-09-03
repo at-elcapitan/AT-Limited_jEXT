@@ -15,10 +15,10 @@ import java.io.File;
 
 public class Main implements IColors {
     public static void main(String[] args) throws Exception {
-        System.out.println("AT PROJECT Limited, 2023; ATLBj-260820231730");
+        System.out.println("AT PROJECT Limited, 2023; AT_jEXT-v0.0.1-beta");
         System.out.println("Product licensed by CC BY-NC-ND-4, file `LICENSE`");
         System.out.println("The license applies to all project files and previous versions (commits)");
-        System.out.println("\t\tStage: Preload");
+        System.out.println("\tStage: Preload");
 
         File env = new File(".env");
         if (!env.exists()) throw new Exception(".env file is not exists.");
@@ -31,7 +31,7 @@ public class Main implements IColors {
             throw new Exception(".env file corrupt or misconfigured");
         }
 
-        System.out.println("\t\tStage: Starting");
+        System.out.println("\tStage: Starting");
         JDA bot = JDABuilder.createDefault(TOKEN)
                 .addEventListeners(new BaseCommandsEventListener())
                 .setEnabledIntents(GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
