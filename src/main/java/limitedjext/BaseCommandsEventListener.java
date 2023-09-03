@@ -1,18 +1,13 @@
 package limitedjext;
 
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.IPermissionHolder;
-import net.dv8tion.jda.api.entities.PermissionOverride;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
-import net.dv8tion.jda.api.entities.templates.TemplateChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
-import net.dv8tion.jda.api.managers.channel.ChannelManager;
 
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
 
 class BaseCommandsEventListener extends ListenerAdapter {
@@ -46,8 +41,8 @@ class BaseCommandsEventListener extends ListenerAdapter {
 
                 if (command.isEmpty()) {
                     event.replyEmbeds(embeds.inspect().build())
-                        .setEphemeral(true)
-                        .queue();
+                            .setEphemeral(true)
+                            .queue();
                     break;
                 }
 
@@ -67,7 +62,8 @@ class BaseCommandsEventListener extends ListenerAdapter {
                     break;
                 }
 
-
+                event.getChannel().asTextChannel().upsertPermissionOverride(event.getGuild().getPublicRole())
+                        .clear(Permission.MESSAGE_SEND).queue();
                 event.replyEmbeds(embeds.successEmbed("Channel opened").build())
                         .setEphemeral(true)
                         .queue();
@@ -80,6 +76,8 @@ class BaseCommandsEventListener extends ListenerAdapter {
                     break;
                 }
 
+                event.getChannel().asTextChannel().upsertPermissionOverride(event.getGuild().getPublicRole())
+                        .deny(Permission.MESSAGE_SEND).queue();
                 event.replyEmbeds(embeds.successEmbed("Channel closed").build())
                         .setEphemeral(true)
                         .queue();
@@ -115,13 +113,13 @@ class BaseCommandsEventListener extends ListenerAdapter {
             case "clear" -> {
                 if (!event.getMember().hasPermission(Permission.MANAGE_CHANNEL)) {
                     event.getChannel().sendMessageEmbeds(embeds.error("871", "Operation not permitted")
-                            .build())
+                                    .build())
                             .queue();
                 }
 
                 MessageChannel channel = event.getChannel();
                 try {
-                  channel.getIterableHistory()
+                    channel.getIterableHistory()
                             .takeAsync(Integer.parseInt(command.get(1)))
                             .thenAccept(channel::purgeMessages);
                 }
