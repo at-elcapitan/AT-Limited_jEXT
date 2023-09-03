@@ -39,35 +39,17 @@
             <artifactId>dotenv-java</artifactId>
             <version>3.0.0</version>
         </dependency>
-
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.2.8</version>
         </dependency>
 
+
         <dependency>
             <groupId>dev.schlaubi.lavakord</groupId>
             <artifactId>jda-java-jvm</artifactId>
             <version>5.1.7</version>
-        </dependency>
-
-        <dependency>
-            <groupId>dev.schlaubi.lavakord</groupId>
-            <artifactId>kord</artifactId>
-            <version>5.1.7</version>
-        </dependency>
-
-        <dependency>
-            <groupId>dev.schlaubi.lavakord</groupId>
-            <artifactId>kord-jvm</artifactId>
-            <version>5.1.7</version>
-        </dependency>
-
-        <dependency>
-            <groupId>dev.kord</groupId>
-            <artifactId>kord-core-jvm</artifactId>
-            <version>0.10.0</version>
         </dependency>
 
         <dependency>
@@ -81,23 +63,7 @@
             <version>${kotlin.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>dev.schlaubi.lavakord</groupId>
-            <artifactId>jda-jvm</artifactId>
-            <version>5.1.7</version>
-        </dependency>
-        <dependency>
-            <groupId>dev.schlaubi.lavakord</groupId>
-            <artifactId>kord-jvm</artifactId>
-            <version>5.1.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>Limited-jEXT</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
