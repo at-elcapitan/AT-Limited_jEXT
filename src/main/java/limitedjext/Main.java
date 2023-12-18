@@ -15,25 +15,24 @@ import java.io.File;
 
 public class Main implements IColors {
     public static void main(String[] args) throws Exception {
-        System.out.println("AT PROJECT Limited, 2023; AT_jEXT-v0.0.1-beta");
+        System.out.println("AT PROJECT Limited, 2023; AT_jEXT-v0.0.2-beta");
         System.out.println("Product licensed by CC BY-NC-ND-4, file `LICENSE`");
         System.out.println("The license applies to all project files and previous versions (commits)");
-        System.out.println("\tStage: Preload");
 
         File env = new File(".env");
         if (!env.exists()) throw new Exception(".env file is not exists.");
-        System.out.println(S_OK + "Checked .env");
 
         Dotenv configLoad = Dotenv.load();
         String TOKEN = configLoad.get("TOKEN");
+        String WELCOME_CHANNEL = configLoad.get("WELCOME_CHANNEL");
 
-        if (TOKEN == null) {
+        if (TOKEN == null | WELCOME_CHANNEL == null) {
             throw new Exception(".env file corrupt or misconfigured");
         }
 
-        System.out.println("\tStage: Starting");
         JDA bot = JDABuilder.createDefault(TOKEN)
-                .addEventListeners(new BaseCommandsEventListener())
+                .addEventListeners(new CommandsEventHandler())
+                .addEventListeners(new DiscordEventsHandler(WELCOME_CHANNEL))
                 .setEnabledIntents(GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
                 .setActivity(Activity.playing("Link, start.."))
                 .disableCache(CacheFlag.MEMBER_OVERRIDES)
@@ -42,7 +41,6 @@ public class Main implements IColors {
                 .disableIntents(GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MESSAGE_TYPING)
                 .setLargeThreshold(50)
                 .build();
-        System.out.println(S_OK + "Bot started");
 
         // Slash commands declare
         bot.updateCommands().addCommands(

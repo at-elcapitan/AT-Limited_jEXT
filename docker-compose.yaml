@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  limitedjext:
+    image: atproject/limitedjext:latest
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: java -jar Limited-jEXT-1.0-SNAPSHOT-jar-with-dependencies.jar
